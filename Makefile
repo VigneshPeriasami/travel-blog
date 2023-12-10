@@ -14,6 +14,6 @@ start-docker:
 push-auth-server:
 	bash scripts/auth-service.sh upload
 
-.PHONY: connect-mysql-ec2
-connect-mysql-ec2:
-	ssh -i ${KEY_PAIR} ${MYSQL_EC2}
+.PHONY: connect-ec2
+connect-ec2:
+	bash scripts/connect-ec2.sh
