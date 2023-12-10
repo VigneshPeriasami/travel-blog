@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Requirements
+# Check DEPLOY_INSTANCE on where to upload auth micro service
+
+DEPLOY_INSTANCE="ec2-user@${MYSQL_HOST}"
+
 CURRENT_SCRIPT=${BASH_SOURCE[0]}
 
 SERVICE_DIR=service
 SERVICE_NAME=auth.service
 ZIPPED_FILE=auth-server.zip
-
-DEPLOY_INSTANCE=$MYSQL_EC2
 
 DOCKER_FILES=(docker-compose.yml Dockerfile .env)
 
