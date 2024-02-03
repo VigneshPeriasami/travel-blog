@@ -46,5 +46,6 @@ func (h *HttpAuth) Authenticate(resp http.ResponseWriter, req *http.Request) {
 var Module = fx.Options(
 	fx.Provide(
 		NewHttpAuthHandlers,
+		NewDigestAuth,
 	),
 )

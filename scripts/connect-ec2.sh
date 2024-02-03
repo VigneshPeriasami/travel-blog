@@ -12,7 +12,7 @@ function ssh_ec2() {
 function main() {
     local choices=(mysql ec2-01)
     echo "Available choices ${choices[@]}"
-    read -p "Input:" instance
+    local instance=$1
     
     case $instance in 
         "${choices[0]}")
@@ -22,9 +22,9 @@ function main() {
             ssh_ec2 $EC2_INSTANCE_01
             ;;
         *)
-            ssh_ec2 $1
+            ssh_ec2 $instance
             ;;
     esac
 }
 
-main
+main "$@"

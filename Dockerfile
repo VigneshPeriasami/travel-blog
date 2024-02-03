@@ -6,3 +6,5 @@ RUN go mod download
 COPY ./auth-server/ ./
 RUN CGO_ENABLED=0 go build -o bin/server
 CMD ["./bin/server"]
+
+FROM nginx as web-lb
