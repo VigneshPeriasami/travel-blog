@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./js/core"
+    },
+    {
+      "path": "./js/consumer"
+    },
+    {
+      "path": "./js/ui-service"
+    }
+  ]
+}

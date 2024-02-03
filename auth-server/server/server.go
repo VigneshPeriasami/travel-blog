@@ -44,10 +44,13 @@ func NewHandlerLogger(logger *log.Logger) HandlerLogger {
 	}
 }
 
-func NewServeMux(authHandler handlers.HttpAuthHandler, l HandlerLogger) *http.ServeMux {
+func NewServeMux(authHandler handlers.HttpAuthHandler, l HandlerLogger, digestAuth handlers.DigestAuth) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", l(authHandler.Home))
 	mux.HandleFunc("/auth", l(authHandler.Authenticate))
+
+	// digest auth handlers
+	mux.HandleFunc("/authenticate", l(digestAuth.Authenticate))
 	return mux
 }
 

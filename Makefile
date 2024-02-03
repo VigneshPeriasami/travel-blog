@@ -16,4 +16,8 @@ push-auth-server:
 
 .PHONY: connect-ec2
 connect-ec2:
-	bash scripts/connect-ec2.sh
+	bash scripts/connect-ec2.sh $(instance)
+
+.PHONY: copy-file
+copy-file:
+	scp -i ${KEY_PAIR} $(file) ec2-user@$(instance):~/.

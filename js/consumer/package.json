@@ -1,0 +1,16 @@
+{
+    "name": "consumer",
+    "packageManager": "yarn@4.1.0",
+    "type": "module",
+    "devDependencies": {
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "core": "workspace:^"
+    },
+    "scripts": {
+        "build": "tsc -b",
+        "start": "yarn build && node dist/index.js"
+    }
+}
