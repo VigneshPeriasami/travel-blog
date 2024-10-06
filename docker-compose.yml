@@ -1,22 +1,6 @@
-version: "3.8"
+version: '3.8'
 
-services:
-  auth-server:
-    build:
-      context: .
-      target: auth-server
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_HOST=${MYSQL_HOST}
-    ports:
-      - 8090:8090
+include:
+    - ./auth-sidecar/docker-compose.yml
+    - ./backend-server/docker-compose.yml
 
-  web-server:
-    build:
-      context: .
-      target: web-lb
-    ports:
-      - 8080:80
