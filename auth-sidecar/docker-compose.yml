@@ -1,0 +1,19 @@
+version: '3.8'
+
+include:
+    - path:
+        - ../js/docker-compose.yml
+
+services:
+    auth-gateway:
+        image: vigneshperiasami/auth-gateway:latest
+        build:
+            context: .
+            target: auth-proxy
+            platforms:
+                - "linux/amd64"
+        ports:
+            - 8080:80
+        environment:
+            - AUTH_SERVER=auth-server:3000
+            - WEB_SERVER=app-server:8089

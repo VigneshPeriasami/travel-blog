@@ -1,0 +1,10 @@
+services:
+    auth-server:
+        image: vigneshperiasami/authserver:latest
+        build:
+            context: .
+            platforms:
+                - "linux/amd64"
+            target: js-auth-server
+        ports:
+            - 3000:3000

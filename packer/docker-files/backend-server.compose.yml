@@ -1,0 +1,15 @@
+services:
+  auth-gateway:
+    image: vigneshperiasami/auth-gateway:latest
+    ports:
+        - 8080:80
+    environment:
+        - AUTH_SERVER=10.0.0.10:3000
+        - WEB_SERVER=app-server:8089
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
+  
+  app-server:
+    image: vigneshperiasami/travel-backend:latest
+    ports:
+      - 8090:8089

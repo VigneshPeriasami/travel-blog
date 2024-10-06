@@ -1,0 +1,31 @@
+{
+    "name": "auth-server",
+    "version": "1.0.0",
+    "description": "UI service for travel blog",
+    "author": "Vignesh Periasami",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@types/express": "^4",
+        "@types/jsonwebtoken": "^9",
+        "@types/morgan": "^1",
+        "@types/passport": "^0",
+        "@types/passport-http": "^0",
+        "@types/passport-http-bearer": "^1",
+        "@types/passport-jwt": "^4",
+        "typescript": "^5.3.3"
+    },
+    "scripts": {
+        "build": "tsc -b",
+        "start": "yarn build && node ./dist/index.js"
+    },
+    "dependencies": {
+        "express": "^4.18.3",
+        "jsonwebtoken": "^9.0.2",
+        "morgan": "^1.10.0",
+        "passport": "^0.7.0",
+        "passport-http": "^0.3.0",
+        "passport-http-bearer": "^1.0.1",
+        "passport-jwt": "^4.0.1"
+    }
+}

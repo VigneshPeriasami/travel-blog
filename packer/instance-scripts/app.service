@@ -1,0 +1,13 @@
+[Unit]
+Description=Auth server boot
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/ec2-user
+ExecStart=/usr/bin/docker-compose -f /home/ec2-user/docker-compose.aws.yml up -d --remove-orphans
+ExecStop=/usr/bin/docker-compose -f /home/ec2-user/docker-compose.aws.yml down --rmi all -v --remove-orphans
+
+[Install]
+WantedBy=multi-user.target

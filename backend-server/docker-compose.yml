@@ -1,0 +1,11 @@
+
+services:
+    app-server:
+        image: vigneshperiasami/travel-backend:latest
+        build:
+            context: .
+            target: backend-server
+            platforms:
+                - "linux/amd64"
+        ports:
+            - 8089:8089

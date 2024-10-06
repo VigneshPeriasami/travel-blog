@@ -1,0 +1,25 @@
+{
+    "name": "travel-blog",
+    "packageManager": "yarn@4.1.0",
+    "workspaces": [
+        "auth-server",
+        "ui-server"
+    ],
+    "devDependencies": {
+        "@types/fs-extra": "^11",
+        "@types/react": "^18.2.43",
+        "@types/react-dom": "^18",
+        "fs-extra": "^11.2.0",
+        "prettier": "3.2.5",
+        "typescript": "^5.3.3"
+    },
+    "scripts": {
+        "start-ui": "tsc -b && yarn workspace ui-service dev",
+        "start-auth": "yarn workspace auth-server start"
+    },
+    "dependencies": {
+        "@ladle/react": "^4.0.2",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    }
+}
