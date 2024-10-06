@@ -5,3 +5,6 @@ js/**/dist/
 .parcel-cache/
 .terraform/
 bin/
+
+terraform.tfstate
+terraform.tfstate.backup
