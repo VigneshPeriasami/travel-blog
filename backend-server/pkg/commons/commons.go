@@ -11,4 +11,5 @@ type Route interface {
 
 var Module = fx.Options(
 	fx.Provide(NewLogger),
+	fx.Provide(NewDynamoDbClient),
 )

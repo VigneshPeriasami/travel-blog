@@ -1,78 +1,32 @@
 import express from 'express';
 import passport from 'passport';
 import morgan from 'morgan';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { DigestStrategy } from 'passport-http';
+
 import jwt from 'jsonwebtoken';
+import { JwtStrategy, DigestAuthStrategy } from './auth-strategy.js';
+import { UserRecord } from './types.js';
 
-const userItself = {
-    id: '1234567',
-    username: 'vikki',
-    email: 'mail2vikki@gmail.com',
-    exp: Math.floor(Date.now() / 1000) + 86400,
+// 24 hr
+const TOKEN_EXPIRY_SECONDS = 86400;
+
+const getAuthToken = (user: UserRecord): string => {
+    return jwt.sign(user, 'secret', {
+        issuer: 'vikki.localmachine.com',
+        expiresIn: TOKEN_EXPIRY_SECONDS,
+        audience: 'anybody',
+        algorithm: 'HS256',
+    });
 };
 
-const tokenUserMap = {
-    '1234567': {
-        id: '1234567',
-        username: 'vikki',
-        email: 'mail2vikki@gmail.com',
-    },
-};
+passport.use(JwtStrategy);
 
-const userCreds = {
-    vikki: 'password',
-};
-
-passport.use(
-    new JwtStrategy(
-        {
-            jwtFromRequest: ExtractJwt.fromExtractors([
-                ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ]),
-            secretOrKey: 'secret',
-            issuer: 'vikki.localmachine.com',
-            audience: 'anybody',
-        },
-        function (jwtPayload, done) {
-            console.log('incoming', jwtPayload);
-            if (jwtPayload.id in tokenUserMap) {
-                return done(null, userItself);
-            }
-            return done(null, false);
-        }
-    )
-);
-
-passport.use(
-    new DigestStrategy(
-        { qop: 'auth', realm: 'mock users' },
-        function (username, cb) {
-            if (username in userCreds) {
-                return setTimeout(() => {
-                    cb(
-                        null,
-                        userItself,
-                        userCreds[username as keyof typeof userCreds]
-                    );
-                }, 3000);
-            }
-            return cb(null, false);
-        },
-        (params, done) => {
-            if (params.nonce) {
-                // todo: validate nonce
-            }
-            done(null, true);
-        }
-    )
-);
+passport.use(DigestAuthStrategy);
 
 const app = express();
 app.use(morgan('dev'));
 
-app.get('/', (_req, res) => {
-    res.send('Hello from auth server');
+app.get('/', async (_req, res) => {
+    res.send('Hello from auth server, Yess!!!');
 });
 
 // curl -v --user vikki:password --digest "http://127.0.0.1:3000/authenticate"
@@ -80,13 +34,12 @@ app.get(
     '/login',
     passport.authenticate('digest', { session: false }),
     (req, res) => {
+        res.setHeader('X-Auth-Subject', req.user.username);
+        res.setHeader('X-Auth-Email', req.user.email);
+
         res.send({
             ...req.user,
-            token: jwt.sign(req.user, 'secret', {
-                issuer: 'vikki.localmachine.com',
-                audience: 'anybody',
-                algorithm: 'HS256',
-            }),
+            token: getAuthToken(req.user),
         });
     }
 );
@@ -98,7 +51,7 @@ app.get(
         res.setHeader('X-Auth-Subject', req.user.username);
         res.setHeader('X-Auth-Email', req.user.email);
         // res.setHeader('X-Auth-Issuer', req.user.issuer);
-        res.send(`Hi there!! ${req.user}`);
+        res.send(`Hi there!! ${JSON.stringify(req.user, null, 2)}`);
     }
 );
 
