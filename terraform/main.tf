@@ -63,9 +63,16 @@ module "backend_security_group" {
   vpc_id = module.vpc.default_vpc.id
 }
 
+module "dynamodb_iam_role" {
+  source = "./modules/iam_dynamodb/"
+  app_name = "travel_app"
+  app_environment = "dev"
+}
+
 resource "aws_instance" "backend-server" {
   ami                         = data.aws_ami.backend_server_ami.id
   instance_type               = "t2.micro"
+  iam_instance_profile  = module.dynamodb_iam_role.dynamodb_profile.name
   vpc_security_group_ids      = [module.backend_security_group.security_group.id]
   subnet_id                   = module.vpc.public_subnet.id
   associate_public_ip_address = true
